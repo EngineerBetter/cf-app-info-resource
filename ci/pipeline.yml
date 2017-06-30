@@ -1,0 +1,24 @@
+---
+jobs:
+- name: build-resource-image
+  public: true
+  serial: true
+  plan:
+  - get: resource-repo
+    trigger: true
+  - put: resource-image
+
+resources:
+- name: resource-repo
+  type: git
+  source:
+    uri: https://github.com/EngineerBetter/cf-app-info-resource
+    branch: master
+
+- name: resource-image
+  type: docker-image
+  source:
+    email: {{docker-hub-email}}
+    username: {{docker-hub-username}}
+    password: {{docker-hub-password}}
+    repository: {{docker-repository}}

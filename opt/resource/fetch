@@ -1,0 +1,28 @@
+#!/bin/bash
+[ "$VERBOSE" ] && set -x
+set -ueo pipefail
+
+JQ_ARGS="--compact-output --monochrome-output --slurp"
+
+INPUT="$(jq $JQ_ARGS .)"
+
+input() {
+  echo "$INPUT" | jq $JQ_ARGS "$@"
+}
+
+SSL=""
+[ "$(input .source.skip_ssl_validation)" -eq "true" ] && SSL="--skip-ssl-validation"
+CF_API="$(input .source.api)"
+CF_USER="$(input .source.username)"
+CF_PASS="$(input .source.password)"
+CF_ORG="$(input .source.organization)"
+CF_SPACE="$(input .source.space)"
+CF_APP="$(input .source.app_name)"
+
+LOGIN="login -a \"$CF_API\" -u \"$CF_USER\" -p \"$CF_PASS\" -o \"$CF_ORG\" -s \"$CF_SPACE\" $SSL"
+
+cf ${LOGIN}
+
+GUID=$(cf app apps-manager --guid)
+
+cf curl /v2/apps/${GUID}/stats | jq $JQ_ARGS '{ uris: ."0".stats.uris }'
