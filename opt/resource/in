@@ -1,3 +1,5 @@
 #!/bin/bash
+[ "$VERBOSE" ] && set -x
+set -ueo pipefail
 
 $(dirname $0)/fetch > $1/app-info.json

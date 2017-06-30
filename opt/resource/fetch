@@ -1,6 +1,7 @@
 #!/bin/bash
 [ "$VERBOSE" ] && set -x
 set -ueo pipefail
+set -x
 
 JQ_ARGS="--compact-output --monochrome-output --slurp"
 
