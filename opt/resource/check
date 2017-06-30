@@ -5,6 +5,8 @@ set -x
 
 echo THIS IS STDERR FROM check >&2
 
+sleep 30
+
 echo '[ { "ref": "71c2c8cbc6ffed57c52206b8ddc1ebd0" } ]'
 
 
