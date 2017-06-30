@@ -6,6 +6,8 @@ JQ_ARGS="-r --compact-output --monochrome-output"
 
 INPUT="$(jq $JQ_ARGS .)"
 
+echo "$INPUT" >&2
+
 input() {
   echo "$INPUT" | jq $JQ_ARGS "$@"
 }
