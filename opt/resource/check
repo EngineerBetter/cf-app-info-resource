@@ -1,5 +1,8 @@
 #!/bin/bash
 [ "$VERBOSE" ] && set -x
 set -ueo pipefail
+set -x
+
+echo THIS IS STDERR FROM check >&2
 
 echo "[ { \"ref\": \"$($(dirname $0)/fetch | { md5sum || md5; } 2>/dev/null | cut -f1 -d' ')\" } ]"
