@@ -1,9 +1,8 @@
 #!/bin/bash
 [ "$VERBOSE" ] && set -x
 set -ueo pipefail
-set -x
 
-JQ_ARGS="--compact-output --monochrome-output --slurp"
+JQ_ARGS="-r --compact-output --monochrome-output"
 
 INPUT="$(jq $JQ_ARGS .)"
 
@@ -12,18 +11,17 @@ input() {
 }
 
 SSL=""
-[ "$(input .source.skip_ssl_validation)" -eq "true" ] && SSL="--skip-ssl-validation"
-CF_API="$(input .source.api)"
-CF_USER="$(input .source.username)"
-CF_PASS="$(input .source.password)"
-CF_ORG="$(input .source.organization)"
-CF_SPACE="$(input .source.space)"
-CF_APP="$(input .source.app_name)"
+[ "$(input .source.skip_ssl_validation)" = "true" ] && SSL="--skip-ssl-validation"
+CF_API=$(input .source.api)
+CF_USER=$(input .source.username)
+CF_PASS=$(input .source.password)
+CF_ORG=$(input .source.organization)
+CF_SPACE=$(input .source.space)
 
-LOGIN="login -a \"$CF_API\" -u \"$CF_USER\" -p \"$CF_PASS\" -o \"$CF_ORG\" -s \"$CF_SPACE\" $SSL"
+LOGIN='login -a "$CF_API" -u "$CF_USER" -p "$CF_PASS" -o "$CF_ORG" -s "$CF_SPACE" $SSL'
 
-cf ${LOGIN}
+eval "cf ${LOGIN} >/dev/null 2>/dev/null"
 
-GUID=$(cf app apps-manager --guid)
+GUID=$(cf app $(input .source.app_name) --guid)
 
 cf curl /v2/apps/${GUID}/stats | jq $JQ_ARGS '{ uris: ."0".stats.uris }'
