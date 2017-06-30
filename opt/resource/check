@@ -1,13 +1,6 @@
-#!/bin/bash
-[ "$VERBOSE" ] && set -x
+#!/usr/bin/env bash
 set -ueo pipefail
-set -x
 
-echo THIS IS STDERR FROM check >&2
+echo '[ { "ref": "fubar" } ]'
 
-sleep 30
-
-echo '[ { "ref": "71c2c8cbc6ffed57c52206b8ddc1ebd0" } ]'
-
-
-#echo "[ { \"ref\": \"$($(dirname $0)/fetch | { md5sum || md5; } 2>/dev/null | cut -f1 -d' ')\" } ]"
+#echo "[ { \"ref\": \"$(/opt/resource/fetch | { md5sum || md5; } 2>/dev/null | cut -f1 -d' ')\" } ]"
