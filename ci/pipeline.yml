@@ -20,6 +20,6 @@ resources:
 - name: resource-image
   type: docker-image
   source:
-    username: {{docker-hub-username}}
-    password: {{docker-hub-password}}
-    repository: {{docker-repository}}
+    username: {{dockerhub_user}}
+    password: {{dockerhub_password}}
+    repository: engineerbetter/cf-app-info-resource
